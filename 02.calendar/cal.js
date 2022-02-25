@@ -2,6 +2,7 @@
 
 const { DateTime } = require('luxon')
 const argv = require('minimist')(process.argv.slice(2))
+
 class Calendar {
   constructor (argv) {
     this.year = argv.y || DateTime.now().year
@@ -10,19 +11,30 @@ class Calendar {
   }
 
   display () {
+    const str = [
+      `      ${this.month}月 ${this.year}`,
+      '日 月 火 水 木 金 土',
+      this.body()
+    ].join('\n')
+
+    process.stdout.write(str + '\n')
+  }
+
+  body () {
     const dates = []
     for (let i = 0; i < this.date.daysInMonth; i++) {
       dates[i] = this.date.plus({ days: i })
     }
 
-    console.log(`      ${this.month}月 ${this.year}`)
-    console.log('日 月 火 水 木 金 土')
-    process.stdout.write('   '.repeat(this.date.weekday))
-    for (const date of dates) {
-      process.stdout.write(String(date.day).toString().padStart(2, ' '))
-      date.weekday === 6 ? process.stdout.write('\n') : process.stdout.write(' ')
-    }
-    process.stdout.write('\n')
+    let str = ''
+    dates.forEach(date => {
+      const day = String(date.day).padStart(2, ' ')
+      str += (date.weekday === 6) ? (day + '\n') : (day + ' ')
+    })
+
+    const blanks = '   '.repeat(this.date.weekday)
+
+    return blanks + str
   }
 }
 
