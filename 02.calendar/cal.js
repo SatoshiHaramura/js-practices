@@ -3,7 +3,7 @@
 const { DateTime } = require('luxon')
 const argv = require('minimist')(process.argv.slice(2))
 
-class Calendar {
+class Cal {
   constructor (argv) {
     this.year = argv.y || DateTime.now().year
     this.month = argv.m || DateTime.now().month
@@ -38,5 +38,5 @@ class Calendar {
   }
 }
 
-const calendar = new Calendar(argv)
-calendar.display()
+const cal = new Cal(argv)
+cal.display()
