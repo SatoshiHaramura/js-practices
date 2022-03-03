@@ -29,7 +29,7 @@ class Cal {
     let str = ''
     dates.forEach(date => {
       const day = String(date.day).padStart(2, ' ')
-      str += (date.weekday === 6) ? (day + '\n') : (day + ' ')
+      str += (date.weekday === 6) ? `${day}\n` : `${day} `
     })
 
     const blanks = '   '.repeat(this.date.weekday)
