@@ -17,7 +17,7 @@ class Cal {
       this.body()
     ].join('\n')
 
-    process.stdout.write(str + '\n')
+    console.log(str)
   }
 
   body () {
