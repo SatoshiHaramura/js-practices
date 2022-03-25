@@ -34,7 +34,7 @@ class Memo {
   refer () {
     const prompt = new Select({
       message: 'Choose a note you want to see:',
-      choices: memos.map((val, index) => { return { name: val[0], value: index } }),
+      choices: this.#collectMemoFirstLine(),
       result () {
         return this.focused.value
       }
@@ -54,7 +54,7 @@ class Memo {
   delete () {
     const prompt = new Select({
       message: 'Choose a note you want to delete:',
-      choices: memos.map((val, index) => { return { name: val[0], value: index } }),
+      choices: this.#collectMemoFirstLine(),
       result () {
         return this.focused.value
       }
@@ -66,6 +66,10 @@ class Memo {
         fs.writeFileSync(memoFile, JSON.stringify(memos))
       })
       .catch(console.error)
+  }
+
+  #collectMemoFirstLine() {
+    return memos.map((val, index) => { return { name: val[0], value: index } })
   }
 }
 
