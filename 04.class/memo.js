@@ -3,11 +3,15 @@ const arg = require('minimist')(process.argv.slice(2))
 
 const { Select } = require('enquirer')
 
-const memoFile = 'memo.json'
-const json = fs.readFileSync(memoFile, 'utf8')
-const memos = JSON.parse(json)
+const fileName = 'memo.json'
 
 class Memo {
+  constructor(fileName) {
+    this.memoFile = fileName
+    const json = fs.readFileSync(this.memoFile, 'utf8')
+    this.memos = JSON.parse(json)
+  }
+
   append () {
     process.stdin.setEncoding('utf8')
 
@@ -22,13 +26,13 @@ class Memo {
     })
 
     reader.on('close', () => {
-      memos.push(lines)
-      fs.writeFileSync(memoFile, JSON.stringify(memos))
+      this.memos.push(lines)
+      fs.writeFileSync(this.memoFile, JSON.stringify(this.memos))
     })
   }
 
   list () {
-    memos.forEach((value, index) => console.log(value[0]))
+    this.memos.forEach((value, index) => console.log(value[0]))
   }
 
   refer () {
@@ -46,7 +50,7 @@ class Memo {
         if (typeof answer === 'string') {
           index = 0
         }
-        memos[index].forEach(value => console.log(value))
+        this.memos[index].forEach(value => console.log(value))
       })
       .catch(console.error)
   }
@@ -62,18 +66,18 @@ class Memo {
 
     prompt.run()
       .then((answer) => {
-        memos.splice(answer, 1)
-        fs.writeFileSync(memoFile, JSON.stringify(memos))
+        this.memos.splice(answer, 1)
+        fs.writeFileSync(this.memoFile, JSON.stringify(this.memos))
       })
       .catch(console.error)
   }
 
   #collectMemoFirstLine() {
-    return memos.map((val, index) => ({ name: val[0], value: index }))
+    return this.memos.map((val, index) => ({ name: val[0], value: index }))
   }
 }
 
-const memo = new Memo(arg)
+const memo = new Memo(fileName)
 
 if (arg.l) {
   memo.list()
