@@ -28,7 +28,7 @@ class Memo {
   }
 
   list () {
-    memos.forEach((value, index) => { console.log(value[0]) })
+    memos.forEach((value, index) => console.log(value[0]))
   }
 
   refer () {
@@ -69,7 +69,7 @@ class Memo {
   }
 
   #collectMemoFirstLine() {
-    return memos.map((val, index) => { return { name: val[0], value: index } })
+    return memos.map((val, index) => ({ name: val[0], value: index }))
   }
 }
 
