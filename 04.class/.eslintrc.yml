@@ -1,8 +1,10 @@
 env:
   browser: true
   es2021: true
+parser: '@babel/eslint-parser'
 extends:
   - standard
 parserOptions:
   ecmaVersion: latest
+  requireConfigFile: false
 rules: {}
