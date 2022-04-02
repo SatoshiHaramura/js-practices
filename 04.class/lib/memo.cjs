@@ -1,10 +1,9 @@
-const arg = require('minimist')(process.argv.slice(2))
 const { Select } = require('enquirer')
-const fileName = 'memo.json'
+const moduleObject = require('./data_storage.cjs')
 
 class Memo {
   constructor(fileName) {
-    this.dataStorage = new DataStorage(fileName)
+    this.dataStorage = new moduleObject.DataStorage(fileName)
     this.memos = JSON.parse(this.dataStorage.json)
   }
 
@@ -73,26 +72,4 @@ class Memo {
   }
 }
 
-class DataStorage {
-  constructor(fileName) {
-    this.fileName = fileName
-    this.fs = require('fs')
-    this.json = this.fs.readFileSync(this.fileName, 'utf8')
-  }
-
-  write(json) {
-    this.fs.writeFileSync(this.fileName, JSON.stringify(json))
-  }
-}
-
-const memo = new Memo(fileName)
-
-if (arg.l) {
-  memo.list()
-} else if (arg.r) {
-  memo.refer()
-} else if (arg.d) {
-  memo.delete()
-} else {
-  memo.append()
-}
+module.exports.Memo = Memo
