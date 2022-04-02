@@ -30,41 +30,43 @@ class Memo {
     this.memos.forEach((value, index) => console.log(value[0]))
   }
 
-  refer () {
-    const prompt = new Select({
-      message: 'Choose a note you want to see:',
-      choices: this.#collectMemoFirstLine(),
-      result () {
-        return this.focused.value
-      }
-    })
-
-    prompt.run()
-      .then((answer) => {
-        let index = answer
-        if (typeof answer === 'string') {
-          index = 0
+  async refer () {
+    try {
+      const prompt = new Select({
+        message: 'Choose a note you want to see:',
+        choices: this.#collectMemoFirstLine(),
+        result () {
+          return this.focused.value
         }
-        this.memos[index].forEach(value => console.log(value))
       })
-      .catch(console.error)
+
+      const answer = await prompt.run()
+      let index = answer
+      if (typeof answer === 'string') {
+        index = 0
+      }
+      this.memos[index].forEach(value => console.log(value))
+    } catch (e) {
+      console.error(e)
+    }
   }
 
-  delete () {
-    const prompt = new Select({
-      message: 'Choose a note you want to delete:',
-      choices: this.#collectMemoFirstLine(),
-      result () {
-        return this.focused.value
-      }
-    })
-
-    prompt.run()
-      .then((answer) => {
-        this.memos.splice(answer, 1)
-        this.dataStorage.write(this.memos)
+  async delete () {
+    try {
+      const prompt = new Select({
+        message: 'Choose a note you want to delete:',
+        choices: this.#collectMemoFirstLine(),
+        result () {
+          return this.focused.value
+        }
       })
-      .catch(console.error)
+
+      const answer = await prompt.run()
+      this.memos.splice(answer, 1)
+      this.dataStorage.write(this.memos)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   #collectMemoFirstLine() {
