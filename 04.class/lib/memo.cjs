@@ -2,7 +2,7 @@ const { Select } = require('enquirer')
 const moduleObject = require('./data_storage.cjs')
 
 class Memo {
-  constructor(fileName) {
+  constructor (fileName) {
     this.dataStorage = new moduleObject.DataStorage(fileName)
     this.memos = JSON.parse(this.dataStorage.json)
   }
@@ -69,7 +69,7 @@ class Memo {
     }
   }
 
-  #collectMemoFirstLine() {
+  #collectMemoFirstLine () {
     return this.memos.map((val, index) => ({ name: val[0], value: index }))
   }
 }
