@@ -1,15 +1,11 @@
-const fs = require('fs')
 const arg = require('minimist')(process.argv.slice(2))
-
 const { Select } = require('enquirer')
-
 const fileName = 'memo.json'
 
 class Memo {
   constructor(fileName) {
-    this.memoFile = fileName
-    const json = fs.readFileSync(this.memoFile, 'utf8')
-    this.memos = JSON.parse(json)
+    this.dataStorage = new DataStorage(fileName)
+    this.memos = JSON.parse(this.dataStorage.json)
   }
 
   append () {
@@ -27,7 +23,7 @@ class Memo {
 
     reader.on('close', () => {
       this.memos.push(lines)
-      fs.writeFileSync(this.memoFile, JSON.stringify(this.memos))
+      this.dataStorage.write(this.memos)
     })
   }
 
@@ -67,13 +63,25 @@ class Memo {
     prompt.run()
       .then((answer) => {
         this.memos.splice(answer, 1)
-        fs.writeFileSync(this.memoFile, JSON.stringify(this.memos))
+        this.dataStorage.write(this.memos)
       })
       .catch(console.error)
   }
 
   #collectMemoFirstLine() {
     return this.memos.map((val, index) => ({ name: val[0], value: index }))
+  }
+}
+
+class DataStorage {
+  constructor(fileName) {
+    this.fileName = fileName
+    this.fs = require('fs')
+    this.json = this.fs.readFileSync(this.fileName, 'utf8')
+  }
+
+  write(json) {
+    this.fs.writeFileSync(this.fileName, JSON.stringify(json))
   }
 }
 
