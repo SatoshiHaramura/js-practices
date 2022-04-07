@@ -1,0 +1,10 @@
+env:
+  browser: true
+  es2021: true
+parser: '@babel/eslint-parser' # MEMO: ESLintのバージョンを上げられるようになったら不要となる予定 https://qiita.com/yuta-katayama-23/items/4a7578ff230e8b4df825
+extends:
+  - standard
+parserOptions:
+  ecmaVersion: latest
+  requireConfigFile: false # MEMO: ESLintのバージョンを上げられるようになったら不要となる予定 https://www.npmjs.com/package/@babel/eslint-parser
+rules: {}
